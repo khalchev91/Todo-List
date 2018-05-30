@@ -17,26 +17,27 @@ namespace Todo_Core.Services
         }
 
 
-        public async Task<TodoItem[]> GetIncompleteItemsAsync()
+        public async Task<TodoItem[]> GetIncompleteItemsAsync(ApplicationUser user)
         {
-            return await _context.TodoItems.Where(x => x.IsDone == false).ToArrayAsync();
+            return await _context.TodoItems.Where(x => x.IsDone == false && x.UserId == user.Id).ToArrayAsync();
         }
 
-        public async Task<bool> AddItemAsync(TodoItem item)
+        public async Task<bool> AddItemAsync(TodoItem item,ApplicationUser user)
         {
             item.Id = Guid.NewGuid();
             item.IsDone = false;
             item.DueAt = DateTimeOffset.Now.AddDays(3);
+            item.UserId = user.Id;
             _context.Add(item);
 
             var successful =await _context.SaveChangesAsync();
             return successful == 1;
         }
 
-        public async Task<bool> MarkDoneAsync(Guid id)
+        public async Task<bool> MarkDoneAsync(Guid id,ApplicationUser user)
         {
-            var item = await _context.TodoItems.Where(x => x.Id == id).SingleOrDefaultAsync();
-
+            var item = await _context.TodoItems.Where(x => x.Id == id && x.UserId == user.Id).SingleOrDefaultAsync();
+                
             if (item == null)
             {
                 return false;

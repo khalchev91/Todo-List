@@ -112,7 +112,7 @@ namespace Todo_Core.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return RedirectToAction(nameof(Index));
             }
 
             var user = await _userManager.GetUserAsync(User);
