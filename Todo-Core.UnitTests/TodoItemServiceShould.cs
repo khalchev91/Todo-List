@@ -54,14 +54,22 @@ namespace Todo_Core.UnitTests
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(databaseName: "Test_AddNewItem").Options;
 
+            
             using (var context = new ApplicationDbContext(options))
             {
-                var itemCount = await context.TodoItems.CountAsync();
-                Assert.Equal(1,itemCount);
+                var fakeUser = new ApplicationUser
+                {
+                    Id = "fake-000",
+                    UserName = "fake@exmaple.com"
+                };
+                
+                var item = await context.TodoItems.FirstAsync();
+                var service = new TodoItemService(context);
 
-//                var item = await context.TodoItems.FirstAsync();
-
+                var result = await service.MarkDoneAsync(item.Id, fakeUser);
+                Assert.True(result);
             }
+                
         }
     }
 }
