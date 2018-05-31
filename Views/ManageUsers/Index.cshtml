@@ -1,0 +1,50 @@
+﻿@model ManageUsersViewModel
+
+@{
+    ViewBag.Title = "Manage Users";
+}
+
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>Email</td>
+    </tr>
+    </thead>
+    
+    <tbody>
+    @foreach (var user in Model.Administrators)
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.Email</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+<h3>Everyone</h3>
+
+<table class="table">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>Email</td>
+    </tr>
+    </thead>
+    
+    <tbody>
+    @foreach (var user in Model.Everyone)
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.Email</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
